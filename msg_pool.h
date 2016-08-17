@@ -13,6 +13,7 @@
 
 typedef struct MsgPool_t {
   Msg_t* msgs;
+  Cell_t* cells;
   uint32_t msg_count;
   MpscFifo_t fifo;
 } MsgPool_t;

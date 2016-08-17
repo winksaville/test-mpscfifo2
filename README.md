@@ -82,55 +82,54 @@ user	0m16.937s
 sys	0m0.000s
 ```
 
-Add the hit is greater for the stress full 'test' application with
-28.0ns vs 18.6ns or 50% slow down:
+But the hit is actually less for the stressful 'test' application with
+18.1ns vs 15.2ns or 20% slow down:
 ```
 wink@wink-desktop:~/prgs/test-mpscfifo2 (master)
 $ time ./test 12 10000000 0x100000
 test client_count=12 loops=10000000 msg_count=1048576
-     1 7fee6e12b700  multi_thread_msg:+client_count=12 loops=10000000 msg_count=1048576
-     2 7fee6e12b700  multi_thread_msg: cmds_processed=722018502 msgs_processed=1457668660 mt_msgs_sent=62081318 mt_no_msgs=57918682
-     3 7fee6e12b700  startup=0.647227
-     4 7fee6e12b700  looping=33.658571
-     5 7fee6e12b700  disconnecting=6.882786
-     6 7fee6e12b700  stopping=0.017140
-     7 7fee6e12b700  complete=0.238081
-     8 7fee6e12b700  processing=40.797s
-     9 7fee6e12b700  cmds_per_sec=17698016.380
-    10 7fee6e12b700  ns_per_cmd=56.5ns
-    11 7fee6e12b700  msgs_per_sec=35730170.002
-    12 7fee6e12b700  ns_per_msg=28.0ns
-    13 7fee6e12b700  total=41.444
-    14 7fee6e12b700  multi_thread_msg:-error=0
+     1 7f8713559700  multi_thread_msg:+client_count=12 loops=10000000 msg_count=1048576
+     2 7f8713559700  multi_thread_msg: cmds_processed=897584156 msgs_processed=1808799968 mt_msgs_sent=76870417 mt_no_msgs=43129583
+     3 7f8713559700  startup=0.428069
+     4 7f8713559700  looping=31.454950
+     5 7f8713559700  disconnecting=1.134321
+     6 7f8713559700  stopping=0.035123
+     7 7f8713559700  complete=0.194830
+     8 7f8713559700  processing=32.819s
+     9 7f8713559700  cmds_per_sec=27349341.814
+    10 7f8713559700  ns_per_cmd=36.6ns
+    11 7f8713559700  msgs_per_sec=55114039.467
+    12 7f8713559700  ns_per_msg=18.1ns
+    13 7f8713559700  total=33.247
+    14 7f8713559700  multi_thread_msg:-error=0
 
 Success
 
-real	0m41.473s
-user	6m46.037s
-sys	0m38.503s
-
+real	0m33.251s
+user	6m7.940s
+sys	0m21.810s
 
 wink@wink-desktop:~/prgs/test-mpscfifo (master)
 $ time ./test 12 10000000 0x100000
 test client_count=12 loops=10000000 msg_count=1048576
-     1 7f11d5248700  multi_thread_msg:+client_count=12 loops=10000000 msg_count=1048576
-     2 7f11d5248700  multi_thread_msg: cmds_processed=1013196688 msgs_processed=2040025045 mt_msgs_sent=87016580 mt_no_msgs=32983420
-     3 7f11d5248700  startup=0.440037
-     4 7f11d5248700  looping=29.840819
-     5 7f11d5248700  disconnecting=7.841160
-     6 7f11d5248700  stopping=0.019422
-     7 7f11d5248700  complete=0.206526
-     8 7f11d5248700  processing=37.908s
-     9 7f11d5248700  cmds_per_sec=26727831.902
-    10 7f11d5248700  ns_per_cmd=37.4ns
-    11 7f11d5248700  msgs_per_sec=53815263.240
-    12 7f11d5248700  ns_per_msg=18.6ns
-    13 7f11d5248700  total=38.348
-    14 7f11d5248700  multi_thread_msg:-error=0
+     1 7f8a263d3700  multi_thread_msg:+client_count=12 loops=10000000 msg_count=1048576
+     2 7f8a263d3700  multi_thread_msg: cmds_processed=1010090576 msgs_processed=2033812821 mt_msgs_sent=86202983 mt_no_msgs=33797017
+     3 7f8a263d3700  startup=0.474970
+     4 7f8a263d3700  looping=29.276984
+     5 7f8a263d3700  disconnecting=1.358415
+     6 7f8a263d3700  stopping=0.063303
+     7 7f8a263d3700  complete=0.165955
+     8 7f8a263d3700  processing=30.865s
+     9 7f8a263d3700  cmds_per_sec=32726447.852
+    10 7f8a263d3700  ns_per_cmd=30.6ns
+    11 7f8a263d3700  msgs_per_sec=65894555.210
+    12 7f8a263d3700  ns_per_msg=15.2ns
+    13 7f8a263d3700  total=31.340
+    14 7f8a263d3700  multi_thread_msg:-error=0
 
 Success
 
-real	0m38.350s
-user	6m13.510s
-sys	0m39.570s
+real	0m31.341s
+user	5m46.070s
+sys	0m20.500s
 ```

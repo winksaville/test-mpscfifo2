@@ -29,6 +29,7 @@
 bool MsgPool_init(MsgPool_t* pool, uint32_t msg_count) {
   bool error;
   Msg_t* msgs;
+  Cell_t* cells;
 
   DPF(LDR "MsgPool_init:+pool=%p msg_count=%u\n",
       ldr(), pool, msg_count);
@@ -42,6 +43,15 @@ bool MsgPool_init(MsgPool_t* pool, uint32_t msg_count) {
     goto done;
   }
 
+  // Allocate cells
+  cells = malloc(sizeof(Cell_t) * msg_count);
+  if (cells == NULL) {
+    printf(LDR "MsgPool_init:-pool=%p ERROR unable to allocate cells, aborting msg_count=%u\n",
+        ldr(), pool, msg_count);
+    error = true;
+    goto done;
+  }
+
   // Output info on the pool and messages
   DPF(LDR "MsgPool_init: pool=%p &msgs[0]=%p &msgs[1]=%p sizeof(Msg_t)=%lu(0x%lx)\n",
       ldr(), pool, &msgs[0], &msgs[1], sizeof(Msg_t), sizeof(Msg_t));
@@ -50,7 +60,7 @@ bool MsgPool_init(MsgPool_t* pool, uint32_t msg_count) {
   initMpscFifo(&pool->fifo);
   for (uint32_t i = 0; i < msg_count; i++) {
     Msg_t* msg = &msgs[i];
-    msg->pCell = &msg->cell;
+    msg->pCell = &cells[i];
     DPF(LDR "MsgPool_init: add %u msg=%p%s\n", ldr(), i, msg, i == 0 ? " stub" : "");
     msg->pPool = &pool->fifo;
     add(&pool->fifo, msg);
@@ -64,9 +74,12 @@ done:
   if (error) {
     free(msgs);
     pool->msgs = NULL;
+    free(cells);
+    pool->cells = NULL;
     pool->msg_count = 0;
   } else {
     pool->msgs = msgs;
+    pool->cells = cells;
     pool->msg_count = msg_count;
   }
 
@@ -102,10 +115,16 @@ uint64_t MsgPool_deinit(MsgPool_t* pool) {
     DPF(LDR "MsgPool_deinit: pool=%p deinitMpscFifo fifo=%p\n", ldr(), pool, &pool->fifo);
     msgs_processed = deinitMpscFifo(&pool->fifo);
 
-    DPF(LDR "MsgPool_deinit: pool=%p CAN NOT free msgs=%p\n", ldr(), pool, pool->msgs);
-    //free(pool->msgs);
-    //pool->msgs = NULL;
-    //pool->msg_count = 0;
+    // Free msgs
+    DPF(LDR "MsgPool_deinit: pool=%p free msgs=%p\n", ldr(), pool, pool->msgs);
+    free(pool->msgs);
+    pool->msgs = NULL;
+
+    // BUG: we can't free cells because the cells could be in use on other fifos.
+    DPF(LDR "MsgPool_deinit: pool=%p CANNOT cells msgs=%p\n", ldr(), pool, pool->msgs);
+    //free(pool->cells);
+    //pool->cells = NULL;
+    pool->msg_count = 0;
   }
   DPF(LDR "MsgPool_deinit:-pool=%p msgs_processed=%lu\n", ldr(), pool, msgs_processed);
   return msgs_processed;

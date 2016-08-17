@@ -54,15 +54,18 @@ bool simple(void) {
 
   printf(LDR "simple:+\n", ldr());
 
+  Cell_t cell1;
+  Cell_t cell2;
+
   Msg_t msg1 = {
-    .pCell = &msg1.cell,
+    .pCell = &cell1,
     .pPool = NULL,
     .arg1 = 1,
     .arg2 = -1 
   };
   
   Msg_t msg2 = {
-    .pCell = &msg2.cell,
+    .pCell = &cell2,
     .pPool = NULL,
     .arg1 = 2,
     .arg2 = -2
@@ -135,15 +138,18 @@ bool perf(const uint64_t loops) {
 
   printf(LDR "perf:+loops=%lu\n", ldr(), loops);
 
+  Cell_t cell1;
+  Cell_t cell2;
+
   Msg_t msg1 = {
-    .pCell = &msg1.cell,
+    .pCell = &cell1,
     .pPool = NULL,
     .arg1 = 1,
     .arg2 = -1 
   };
   
   Msg_t msg2 = {
-    .pCell = &msg2.cell,
+    .pCell = &cell2,
     .pPool = NULL,
     .arg1 = 2,
     .arg2 = -2

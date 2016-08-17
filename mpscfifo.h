@@ -44,7 +44,6 @@ typedef struct Cell_t {
 
 typedef struct Msg_t {
   Cell_t* pCell;
-  Cell_t cell;
   MpscFifo_t* pPool;
   MpscFifo_t* pRspQ;
   uint64_t arg1;
