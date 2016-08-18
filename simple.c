@@ -5,15 +5,9 @@
 #define NDEBUG
 
 #define _DEFAULT_SOURCE
-#define USE_RMV 1
-
-#if USE_RMV
-#define RMV rmv
-#else
-#define RMV rmv_non_stalling
-#endif
 
 #include "mpscfifo.h"
+#include "diff_timespec.h"
 #include "dpf.h"
 
 #include <sys/types.h>
@@ -33,20 +27,6 @@
 _Static_assert(sizeof(uint64_t) >= sizeof(void*), "Expect sizeof uint64_t >= sizeof void*");
 
 _Atomic(uint64_t) gTick = 0;
-
-const uint64_t ns_u64 = 1000000000ll;
-const double ns_flt = 1000000000.0;
-
-/**
- * Return the difference between to timespec in nano seconds
- */
-double diff_timespec_ns(struct timespec* t1, struct timespec* t2) {
-   double t1_ns = (t1->tv_sec * ns_flt) + t1->tv_nsec;
-   double t2_ns = (t2->tv_sec * ns_flt) + t2->tv_nsec;
-   double diff = t1_ns - t2_ns;
-   DPF("diff_timespec_ns: diff=%.10f\n", diff);
-   return diff;
-}
 
 bool simple(void) {
   bool error = false;
